@@ -2,42 +2,21 @@
 FROM paritytech/ci-linux:production as builder
 
 LABEL maintainer="kylin-dev"
-ARG RUST_VERSION=nightly-2021-01-29
+ARG RUST_VERSION=nightly-2020-10-01
 ARG PROFILE=release
-ARG GIT_REPO="https://github.com/Kylin-Network/kylin-node.git"
-ARG GIT_BRANCH="master"
+ARG GIT_REPO="https://github.com/samelamin/kylin-node.git"
+ARG GIT_BRANCH="code_cleanup"
 
-RUN git clone --recursive ${GIT_REPO}
+RUN git clone -b $GIT_BRANCH --recursive ${GIT_REPO}
 WORKDIR /builds/kylin-node
 RUN sed -i s/localhost/kylin-data-proxy/g /builds/kylin-node/pallets/kylin-ocw/src/lib.rs
 RUN sed -i s/localhost/kylin-node/g /builds/kylin-node/scripts/insert_alice_key.sh
-
-
 RUN rustup default stable
 RUN rustup uninstall nightly
 RUN rustup toolchain install ${RUST_VERSION}
 RUN rustup target add wasm32-unknown-unknown --toolchain ${RUST_VERSION}
 
-
-
-RUN sed -i 's/2.0.0/2.0.1/g'  /builds/kylin-node/node/Cargo.toml
-RUN sed -i 's/0.8.0/0.8.1/g'  /builds/kylin-node/node/Cargo.toml
-
-RUN sed -i 's/2.0.0/2.0.1/g'  /builds/kylin-node/runtime/Cargo.toml
-RUN sed -i 's/0.8.0/0.8.1/g'  /builds/kylin-node/runtime/Cargo.toml
-
-RUN sed -i 's/2.0.0/2.0.1/g'  /builds/kylin-node/pallets/kylin-ocw/Cargo.toml
-RUN sed -i 's/0.8.0/0.8.1/g'  /builds/kylin-node/pallets/kylin-ocw/Cargo.toml
-
-RUN sed -i 's/2.0.0/2.0.1/g'  /builds/kylin-node/pallets/kylin-oracle/Cargo.toml
-RUN sed -i 's/0.8.0/0.8.1/g'  /builds/kylin-node/pallets/kylin-oracle/Cargo.toml
-
-RUN cargo +${RUST_VERSION} build --release || true && curl https://raw.githubusercontent.com/paritytech/substrate/master/primitives/arithmetic/src/fixed_point.rs > /usr/local/cargo/registry/src/github.com-1ecc6299db9ec823/sp-arithmetic-2.0.0/src/fixed_point.rs
-RUN sed -i 's/1.into()/1u32.into()/g' /builds/kylin-node/pallets/kylin-oracle/src/lib.rs
-RUN sed -i 's/let one_thousand = NumberFor::<B>::from(1_000)/let one_thousand = NumberFor::<B>::from(1_000u32)/g' /usr/local/cargo/registry/src/github.com-1ecc6299db9ec823/sc-informant-0.8.0/src/display.rs
-RUN cargo +${RUST_VERSION} build --release
-
-
+RUN cargo +${RUST_VERSION} build --${PROFILE}
 RUN cp target/${PROFILE}/kylin-node /kylin-node
 
 # build sample data fetcher
