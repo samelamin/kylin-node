@@ -1,6 +1,6 @@
 [submodule "contracts"]
 	path = contracts
-	url = https://github.com/Kylin-Network/kylin-contracts.git
+	url = https://github.com/samelamin/kylin-contracts.git
 	branch = main
 [submodule "pallets"]
 	path = pallets
