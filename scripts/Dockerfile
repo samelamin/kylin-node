@@ -12,7 +12,7 @@ RUN git clone --recursive ${GIT_REPO}
 
 WORKDIR /builds/kylin-node
 RUN git checkout -b ${GIT_BRANCH} origin/${GIT_BRANCH}
-
+RUN git pull --recurse-submodules
 
 RUN sed -i s/localhost/kylin-data-proxy/g /builds/kylin-node/pallets/kylin-ocw/src/lib.rs
 RUN sed -i s/localhost/kylin-node/g /builds/kylin-node/scripts/insert_alice_key.sh
