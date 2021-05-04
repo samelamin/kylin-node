@@ -29,8 +29,8 @@ serde = { features = ['derive'], optional = true, version = '1.0.119' }
 ##pallet-template = { path = '../pallets/template', default-features = false, version = '3.0.0' }
 ##pallet-quorumuorum = { path = '../pallets/quorum', default-features = false, version = '3.0.0' }
 ## pallet-ocw = { path = '../pallets/ocw', default-features = false, version = '3.0.0' }
-kylin-oracle = { path = '../pallets/kylin-oracle', default-features = false, version = '3.0.0' }
-kylin-ocw = { path = '../pallets/kylin-ocw', version = '3.0.0', default-features = false }
+kylin-oracle = { path = '../pallets/kylin-oracle', default-features = false, version = '2.0.0' }
+kylin-ocw = { path = '../pallets/kylin-ocw', version = '2.0.0', default-features = false }
 
 # Substrate dependencies
 

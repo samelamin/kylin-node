@@ -7,8 +7,13 @@ ARG PROFILE=release
 ARG GIT_REPO="https://github.com/samelamin/kylin-node.git"
 ARG GIT_BRANCH="code_cleanup"
 
-RUN git clone -b $GIT_BRANCH --recursive ${GIT_REPO}
+RUN git clone --recursive ${GIT_REPO}
+
+
 WORKDIR /builds/kylin-node
+RUN git checkout -b ${GIT_BRANCH} origin/${GIT_BRANCH}
+
+
 RUN sed -i s/localhost/kylin-data-proxy/g /builds/kylin-node/pallets/kylin-ocw/src/lib.rs
 RUN sed -i s/localhost/kylin-node/g /builds/kylin-node/scripts/insert_alice_key.sh
 RUN rustup default stable
